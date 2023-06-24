@@ -72,6 +72,8 @@ export const main = async function(inputLocation, outputLocation) {
     fs.writeFileSync(outputLocation, outputAudioData);
 
     console.error('the output file was written to ' + outputLocation);
+    const masteredFile = await fs.readFileSync(outputLocation);
+    return masteredFile;
 };
 
 export const getMasteredFiles = async function(directory, files = []) {
