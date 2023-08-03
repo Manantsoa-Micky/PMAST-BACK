@@ -30,30 +30,8 @@ const currentFileUrl = import.meta.url;
 const currentFilePath = fileURLToPath(currentFileUrl);
 const absolutePath = join(dirname(currentFilePath), "../..");
 
-const getFileName = (username) => {
-  return new Promise((resolve, reject) => {
-    const folderPath = path.join("mastered", username);
-    fs.readdir(folderPath, (err, files) => {
-      if (err) {
-        console.error("Error while reading mastered folder:", err);
-        reject(err);
-        return;
-      }
-      if (files.length === 0) {
-        console.error("No files found in the mastered folder.");
-        reject(new Error("No files found."));
-        return;
-      }
-      const filename = files[0];
-      console.log(filename);
-      resolve(filename);
-    });
-  });
-};
-
 export const getFile = async (req, res) => {
   const filepath = `${absolutePath}/mastered`;
-  const { username } = req.query;
-  const filename = await getFileName(username);
+  const { username, filename } = req.query;
   res.download(`${filepath}/${username}/${filename}`);
 };
