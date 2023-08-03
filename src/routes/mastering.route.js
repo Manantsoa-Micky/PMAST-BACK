@@ -5,6 +5,7 @@ import multer from 'multer';
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/masterize', upload.single('file'), masteringController.masterize);
-router.get('/getMastered', masteringController.getMasterized)
+router.post('/getMastered', masteringController.getFile);
+router.get('/getFileName', masteringController.getFileName);
 
 export default router;

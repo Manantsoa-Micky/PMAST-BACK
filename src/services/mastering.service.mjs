@@ -72,12 +72,11 @@ export const main = async function(inputLocation, outputLocation) {
     fs.writeFileSync(outputLocation, outputAudioData);
 
     console.error('the output file was written to ' + outputLocation);
-    const masteredFile = await fs.readFileSync(outputLocation);
-    return masteredFile;
+    return 'Success'
 };
 
 export const getMasteredFiles = async function(directory, files = []) {
-    const fileList = await fs.readdirSync(directory);
+    const fileList = fs.readdirSync(directory);
     let fileContents = null;
     for (const file of fileList) {
         const name = `${directory}/${file}`;
@@ -86,17 +85,17 @@ export const getMasteredFiles = async function(directory, files = []) {
         } else {
             try {
                 // Read the contents of the file
-                fileContents = await fs.readFileSync(name);
+                fileContents = fs.readFileSync(name);
                 // Do something with the file contents
                 console.log('File contents:', fileContents);
             } catch (error) {
                 console.error('Error reading file:', error);
             }
-            await files.push(fileContents);
+            files.push(fileContents);
         }
     }
     if (files == null) {
         return 'No mastered files'
     }
-    return files;
+    return files[0];
 }
