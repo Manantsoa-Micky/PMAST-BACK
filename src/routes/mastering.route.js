@@ -1,11 +1,18 @@
-import express from 'express';
-import * as masteringController from '../controllers/mastering.controller.js'
+import express from "express";
+import multer from "multer";
+// import * as masteringController from "../controllers/mastering.controller.js";
+import masterize, {
+  getFile,
+  getFileName,
+} from "../controllers/mastering.controller.js";
 const router = express.Router();
-import multer from 'multer';
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: "uploads/" });
 
-router.post('/masterize', upload.single('file'), masteringController.masterize);
-router.post('/getMastered', masteringController.getFile);
-router.get('/getFileName', masteringController.getFileName);
+router.post("/masterize", upload.single("file"), masterize);
+// router.get("/getMastered", (req, res) => {
+//   console.log("called");
+// });
+router.get("/getMastered", getFile);
+router.get("/getFileName", getFileName);
 
 export default router;

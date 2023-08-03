@@ -1,14 +1,12 @@
-import * as masteringMusic from "../services/mastering.service.mjs";
 import fs from "fs";
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import * as masteringMusic from "../services/mastering.service.mjs";
 
 // TAKING WAV FILES
-export const masterize = async (req, res) => {
+export default async (req, res) => {
   const file = req.file;
-  const username = req.query.username;
+  const username = req.body.username;
   const folderName = "mastered/" + username;
 
   if (!fs.existsSync(folderName)) {
@@ -45,25 +43,24 @@ export const masterize = async (req, res) => {
 
 const currentFileUrl = import.meta.url;
 const currentFilePath = fileURLToPath(currentFileUrl);
-const absolutePath = join(dirname(currentFilePath), '../..');
+const absolutePath = join(dirname(currentFilePath), "../..");
 
 export const getFile = (req, res) => {
   const filepath = `${absolutePath}/mastered`;
-  const filename = `${req.query.username}`;
-
-  res.download(filepath, filename);
+  const { filename, username } = req.query;
+  res.download(`${filepath}/${username}/${filename}`);
 };
 
 export const getFileName = (req, res) => {
-  fs.readdir('mastered', (err, files) => {
+  fs.readdir("mastered", (err, files) => {
     if (err) {
-      console.error('Error while reading mastered folder:', err);
-      res.status(500).send('Failed to read mastered folder.');
+      console.error("Error while reading mastered folder:", err);
+      res.status(500).send("Failed to read mastered folder.");
       return;
     }
 
     if (files.length === 0) {
-      res.status(404).send('No files found in the mastered folder.');
+      res.status(404).send("No files found in the mastered folder.");
       return;
     }
 
